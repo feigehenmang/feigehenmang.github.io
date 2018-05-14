@@ -17,7 +17,7 @@
 <!--<![endif]-->
 
 <head>
-  <title>Archives: 2018 | LiJinFeiBlog</title>
+  <title>js事件顺序 | LiJinFeiBlog</title>
   <!-- Meta data -->
     <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -59,7 +59,7 @@
 </head>
 
 <!--
-<body class="home-template">
+<body class="post-template">
 -->
 <body id="index" class="lightnav animsition">
 
@@ -167,78 +167,107 @@
         <!-- ============================ Header & Logo bar =========================== -->
 
 
-      <!-- ============================ Hero Image =========================== -->
-
-<section id="hero" class="scrollme">
-    <div class="container-fluid element-img" style="background: url(/img/bg_img.jpg) no-repeat center center fixed;background-size: cover">
-        <div class="row">
-            <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 vertical-align cover boost text-center">
-                <div class="center-me animateme" data-when="exit" data-from="0" data-to="0.6" data-opacity="0" data-translatey="100">
-                    <div>
-                        
-                        <h2>YOU'VE MADE A <span>BRAVE</span> DECISION, WELCOME.</h2>
-                        <p></p>
-                        
-                        <h2></h2>
-                        <p>每一个不曾起舞的日子都是对生命的辜负。</p>
-                        
-
-                    </div>
-                </div>
-            </div>
-            <!-- // .col-md-12 -->
-        </div>
-        <div class="herofade beige-dk"></div>
-    </div>
-</section>
-
-<!-- Height spacing helper -->
-<div class="heightblock"></div>
-<!-- // End height spacing helper -->
-
-<!-- ============================ END Hero Image =========================== -->
-
-
-
-
-<section id="services">
+      
+<section id="intro">
     <div class="container">
-        <div class="row">
-            <div class="col-md-10 col-md-offset-1">
-                <div class="row boxes">
-                    
-                    
-                        
-                        
-                        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 wow fadeInUp" data-wow-delay="0.3s">
-                            
-                              <h4 class="title"><a href="/2018/05/14/js事件顺序/">js事件顺序</a></h4>
-                            
-                            <p><time datetime="2018-05-14T09:31:21.000Z"><a href="/2018/05/14/js事件顺序/">2018-05-14</a></time></p>
-                        </div>
-                    
-                        
-                        
-                        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 wow fadeInUp" data-wow-delay="0.3s">
-                            
-                              <h4 class="title"><a href="/2018/05/14/hello-world/">Hello World</a></h4>
-                            
-                            <p><time datetime="2018-05-14T01:06:57.357Z"><a href="/2018/05/14/hello-world/">2018-05-14</a></time></p>
-                        </div>
-                    
-                </div>
-            </div>    
+        <div class="row col-md-offset-2">
+            <div class="col-md-8">
+    			<span class="post-meta">
+      <time datetime="2018-05-14T09:31:21.000Z" itemprop="datePublished">
+          2018-05-14
+      </time>
+    
+</span>
+                <h1>js事件顺序</h1>
+            </div>
         </div>
-    </div>
-</section> 
+        <div class="col-md-8 col-md-offset-2">
+      		<h4 id="事件捕获和事件冒泡"><a href="#事件捕获和事件冒泡" class="headerlink" title="事件捕获和事件冒泡"></a>事件捕获和事件冒泡</h4><p><a href="https://blog.csdn.net/wuyou1336/article/details/56928738" target="_blank" rel="noopener">事件捕获和事件冒泡</a></p>
+<ol>
+<li>事件顺序与样式无关只与dom结构相关</li>
+<li><p>正常情况由child向parent传递事件，先执行child，再执行parent</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">//html</span><br><span class="line">&lt;div id=&quot;parent&quot;&gt;</span><br><span class="line">    &lt;div id=&quot;child&quot;&gt;hello&lt;/div&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">//js</span><br><span class="line">child.addEventListener(&quot;click&quot;,function()&#123;</span><br><span class="line">    console.log(&quot;child 被触发&quot;);//1</span><br><span class="line">&#125;);</span><br><span class="line">parent.addEventListener(&quot;click&quot;,function() &#123;</span><br><span class="line">    console.log(&quot;parent 被触发&quot;);//2</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>以上结论与body和html无关，如果以冒泡方式触发事件，在触发当前元素事件后会直接先触发body再触发html然后才是该元素的父级元素</p>
+</li>
+<li><p>以事件捕获的形式触发事件会先执行父级的事件在向下传递</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">//js</span><br><span class="line">child.addEventListener(&quot;click&quot;, function () &#123;</span><br><span class="line">    console.log(&quot;child 被触发&quot;);//2</span><br><span class="line">&#125;,true);</span><br><span class="line">parent.addEventListener(&quot;click&quot;, function () &#123;</span><br><span class="line">    console.log(&quot;parent 被触发&quot;);//1</span><br><span class="line">&#125;,true);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>当给body和html绑定上事件捕获方式的事件时，只可以肯定当前点击的事件最后执行，他的直系父级最先执行</p>
+</li>
+<li>这种情况下最好不要给html还有body绑定事件，难以控制</li>
+</ol>
+<h4 id="事件中的this"><a href="#事件中的this" class="headerlink" title="事件中的this"></a>事件中的this</h4><pre><code>简单的来说，第一种情形下，函数的执行被放在了dom上以属性的方式中直接调用，所以运行时this指向window。
+而第二种方式时很明显的是调用了dom对象上的onclick函数并且传入了一个回调函数所，所以此时this指向dom本身
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">//html</span><br><span class="line">&lt;div class=&quot;child&quot; onclick=&quot;hello(this)&quot;&gt;hello &lt;/div&gt;</span><br><span class="line">//js</span><br><span class="line">function hello(params) &#123;</span><br><span class="line">    console.log(params);//指向div.child</span><br><span class="line">    console.log(this);//指向window</span><br><span class="line">&#125;;</span><br><span class="line">document.querySelector(&quot;.child&quot;).onclick = hello;</span><br><span class="line">//此时第一个输出event对象，第二个输出div.child</span><br></pre></td></tr></table></figure>
+<h4 id="this-指向"><a href="#this-指向" class="headerlink" title="this 指向"></a>this 指向</h4><pre><code>由上文既可以引出this指向只与函数运行时的上下文关系有关
+</code></pre>
+            <div class="clearfix"></div>
+            <hr class="nogutter">
+        </div>
+        <nav class="m-pagination col-md-8 col-md-offset-2 col-sm-24" role="pagination">
+    
+    
+    <a class="pull-right" href="/2018/05/14/hello-world/">
+        Hello World →
+    </a>
+    
+</nav>
 
-<section id="statement">
-    <div class="container text-center wow fadeInUp" data-wow-delay="0.5s">
-        <div class="row">
-            <p>虽然还没想好写点什么，但是总觉得这里放句话比较和谐。</p>
-        </div>
+        <div class="col-md-8 col-md-offset-2 col-sm-24"><script type="text/javascript">
+  /**
+   * 搜狐畅言
+   */
+
+  /*
+  document.write('<div id="SOHUCS" sid="' + window.location.pathname.slice(1) + '" ></div>');
+
+  window.onload = function () {
+    (function () {
+      var appid = 'cytXXXX';
+      var conf = 'prod_xxxxxxxxxxxxxxxxx';
+      var width = window.innerWidth || document.documentElement.clientWidth;
+      var loadJs = function (d, a, id) {
+        var c = document.getElementsByTagName("head")[0] || document.head || document.documentElement;
+        var b = document.createElement("script");
+        b.setAttribute("type", "text/javascript");
+        b.setAttribute("charset", "UTF-8");
+        b.setAttribute("src", d);
+        if (id) {
+          b.setAttribute("id", id);
+        }
+        if (typeof a === "function") {
+          if (window.attachEvent) {
+            b.onreadystatechange = function () {
+              var e = b.readyState;
+              if (e === "loaded" || e === "complete") {
+                b.onreadystatechange = null;
+                a()
+              }
+            }
+          } else {
+            b.onload = a
+          }
+        }
+        c.appendChild(b)
+      };
+
+      loadJs("https://changyan.sohu.com/upload/changyan.js", function () {
+        window.changyan.api.config({
+          appid: appid,
+          conf: conf
+        })
+      });
+    })();
+  }
+  */
+
+</script>
+</div>
     </div>
 </section>
+
+
       
 <!-- ============================ Footer =========================== -->
 
